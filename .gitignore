@@ -1,0 +1,5 @@
+electrsdata/*
+!electrsdata/.gitkeep
+btcdata/*
+!btcdata/.gitkeep
+

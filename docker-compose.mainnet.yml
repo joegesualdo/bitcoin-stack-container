@@ -1,0 +1,36 @@
+version: "0.1"
+
+services:
+  bitcoind:
+    build: https://github.com/joegesualdo/bitcoin-core-dockerfile.git#main
+    container_name: bitcoind
+    image: bitcoind
+    ports:
+      - 8332:8332
+      - 8333:8333
+    working_dir: /
+    volumes:
+     - ./btcdata:/root/.bitcoin
+     - ./bitcoin.mainnet.conf:/root/.bitcoin/bitcoin.conf
+    command: sh -c "/usr/local/bin/bitcoind -rest=1 -server=1 -printtoconsole -txindex=1"
+  electrs:
+    container_name: electrs
+    image: electrs
+    build: https://github.com/joegesualdo/electrs-dockerfile.git#main
+    ports:
+      - 50001:50001
+    working_dir: /
+    volumes:
+     - ./electrsdata:/electrsdata
+     - ./electrs_config.mainnet.toml:/electrs_config.toml
+     - ./btcdata:/root/.bitcoin
+    environment:
+      ELECTRS_DAEMON_RPC_ADDR: 'host.docker.internal:8332'
+      ELECTRS_DAEMON_P2P_ADDR: 'host.docker.internal:8333'
+      ELECTRS_ELECTRUM_RPC_ADDR: '0.0.0.0:50001' 
+      ELECTRS_WAIT_DURATION_SECS: 10000
+      ELECTRS_JSONRPC_TIMEOUT_SECS: 100000
+    command: sh -c "/electrs/target/release/electrs --conf /electrs_config.mainnet.toml"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
