@@ -9,7 +9,7 @@
 
 Current Bitcoin stack layers:
 - [Bitcoin Core Full Node](https://bitcoin.org/en/full-node) - Used to interact with the Bitcoin Network
-- [Electrs Server](https://github.com/romanz/electrs) - Used to effieciently query certain data
+- [Electrs Server](https://github.com/romanz/electrs) - Used to efficiently query certain data
 
 ## Run
 > Run mainnet
